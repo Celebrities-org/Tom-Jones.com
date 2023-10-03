@@ -271,43 +271,35 @@ href=https://celebrity-org.github.io/.TomJones.com/>
 
 
 
-  <script>
-    function convertCurrency() {
-      // Get the visitor's country based on IP address
-      fetch('https://ipapi.co/json/')
-        .then(response => response.json())
-        .then(data => {
-          const country = data.country_code;
 
-
-          // Find the currency symbol elements on your page
-          const currencySymbolElements = document.getElementsByClassName('currency-symbol');
-
-
-          // Check if the visitor is in England or Scotland
-          if (country === 'GB') {
-            // Replace "$" with "£" for all currency symbol elements
-            Array.from(currencySymbolElements).forEach(element => {
-              element.textContent = '£';
-            });
-          }
-          // Check if the visitor is in a European country
-          else if (country === 'DE' || country === 'FR' || country === 'ES' || country === 'NL') {
-            // Replace "$" with "€" for all currency symbol elements
-            Array.from(currencySymbolElements).forEach(element => {
-              element.textContent = '€';
-            });
-          }
-        })
-        .catch(error => {
-          console.error('Error:', error);
-        });
-    }
-  </script>
-
-
-<body onload="convertCurrency()">
   
+<script>
+  async function convertCurrency() {
+    try {
+      const response = await fetch('https://ipapi.co/json/');
+      const data = await response.json();
+      const country = data.country_code;
+
+      const currencySymbolElements = document.getElementsByClassName('currency-symbol');
+
+      if (country === 'GB') {
+        Array.from(currencySymbolElements).forEach(element => {
+          element.textContent = '£';
+        });
+      } else if (country === 'DE' || country === 'FR' || country === 'ES' || country === 'NL') {
+        Array.from(currencySymbolElements).forEach(element => {
+          element.textContent = '€';
+        });
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+  
+  document.addEventListener('DOMContentLoaded', convertCurrency);
+</script>
+
+
 
 
   
